@@ -6,8 +6,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Instagram\Api;
+use Instagram\Model\Media;
 use Instagram\Model\Profile;
-use Statamic\Tags\Concerns\OutputsItems;
 use Statamic\Tags\Tags;
 
 class Instagram extends Tags
@@ -81,6 +81,13 @@ class Instagram extends Tags
             ->map(function ($media) {
                 $media = $media->toArray();
                 $media['date'] = Carbon::parse($media['date']);
+
+                if ($media['video']) {
+                    $mediaClass = new Media();
+                    $mediaClass->setLink($media['link']);
+
+                    $media['videoUrl'] = app(Api::class)->getMediaDetailed($mediaClass)?->getVideoUrl();
+                }
 
                 return $media;
             })

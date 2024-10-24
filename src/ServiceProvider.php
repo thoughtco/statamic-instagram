@@ -11,7 +11,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $tags = [
         Tags\Instagram::class,
     ];
-    
+
     public function bootAddon()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/statamic-instagram.php', 'statamic-instagram');
