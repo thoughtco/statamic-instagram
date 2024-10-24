@@ -20,10 +20,11 @@ class Instagram extends Tags
     public function index()
     {
         $limit = $this->params->int('limit', 12);
+        $profileHandle = $this->params->get('profile');
+        
+        $cache_key = config('statamic-instagram.cache.key_prefix') . '_' . $profileHandle . '_' . $limit;
 
-        $cache_key = config('statamic-instagram.cache.key_prefix').'_'.$limit;
-
-        if (! $profileHandle = $this->params->get('profile')) {
+        if (!$profileHandle) {
             return [];
         }
 
