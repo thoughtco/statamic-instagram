@@ -18,7 +18,7 @@ class ServiceProvider extends AddonServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/statamic-instagram.php' => config_path('statamic-instagram.php'),
+                __DIR__.'/../config/statamic-instagram.php' => config_path('statamic-instagram.php'),
             ], 'statamic-instagram-config');
         }
 

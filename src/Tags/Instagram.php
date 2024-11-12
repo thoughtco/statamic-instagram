@@ -21,10 +21,10 @@ class Instagram extends Tags
     {
         $limit = $this->params->int('limit', 12);
         $profileHandle = $this->params->get('profile');
-        
-        $cache_key = config('statamic-instagram.cache.key_prefix') . '_' . $profileHandle . '_' . $limit;
 
-        if (!$profileHandle) {
+        $cache_key = config('statamic-instagram.cache.key_prefix').'_'.$profileHandle.'_'.$limit;
+
+        if (! $profileHandle) {
             return [];
         }
 
@@ -32,7 +32,7 @@ class Instagram extends Tags
             return $this->output(Cache::remember(
                 $cache_key,
                 now()->addSeconds(config('statamic-instagram.cache.duration')),
-                fn() => $this->getData($profileHandle, $limit)
+                fn () => $this->getData($profileHandle, $limit)
             ));
         } catch (\Exception $exception) {
             Log::alert('Instagram error : '.$exception->getMessage());
@@ -75,7 +75,7 @@ class Instagram extends Tags
             $profile = app(Api::class)->getMoreMedias($profile);
 
             $media = array_merge($media, $profile->getMedias());
-        } while (count ($media) < $limit && $profile->hasMoreMedias());
+        } while (count($media) < $limit && $profile->hasMoreMedias());
 
         return collect($media)
             ->take($limit)
@@ -84,7 +84,7 @@ class Instagram extends Tags
                 $media['date'] = Carbon::parse($media['date']);
 
                 if ($media['video']) {
-                    $mediaClass = new Media();
+                    $mediaClass = new Media;
                     $mediaClass->setLink($media['link']);
 
                     $media['videoUrl'] = app(Api::class)->getMediaDetailed($mediaClass)?->getVideoUrl();
